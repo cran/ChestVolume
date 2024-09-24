@@ -1,0 +1,109 @@
+#' Sample 3D Motion Capture Data for Chest Expansion Analysis
+#'
+#' This dataset contains 3D marker coordinate data collected from motion capture
+#' systems for chest expansion analysis. It includes 2309 time frames and 30 markers.
+#' Each marker has three coordinates: X, Y, and Z, representing its position in 3D space.
+#'
+#' @format A data frame with 2309 rows and 90 variables (30 markers, each with X, Y, Z coordinates):
+#' \describe{
+#'   \item{M01 X}{X-coordinate of marker M01}
+#'   \item{M01 Y}{Y-coordinate of marker M01}
+#'   \item{M01 Z}{Z-coordinate of marker M01}
+#'   \item{M02 X}{X-coordinate of marker M02}
+#'   \item{M02 Y}{Y-coordinate of marker M02}
+#'   \item{M02 Z}{Z-coordinate of marker M02}
+#'   \item{M03 X}{X-coordinate of marker M03}
+#'   \item{M03 Y}{Y-coordinate of marker M03}
+#'   \item{M03 Z}{Z-coordinate of marker M03}
+#'   \item{M04 X}{X-coordinate of marker M04}
+#'   \item{M04 Y}{Y-coordinate of marker M04}
+#'   \item{M04 Z}{Z-coordinate of marker M04}
+#'   \item{M05 X}{X-coordinate of marker M05}
+#'   \item{M05 Y}{Y-coordinate of marker M05}
+#'   \item{M05 Z}{Z-coordinate of marker M05}
+#'   \item{M06 X}{X-coordinate of marker M06}
+#'   \item{M06 Y}{Y-coordinate of marker M06}
+#'   \item{M06 Z}{Z-coordinate of marker M06}
+#'   \item{M07 X}{X-coordinate of marker M07}
+#'   \item{M07 Y}{Y-coordinate of marker M07}
+#'   \item{M07 Z}{Z-coordinate of marker M07}
+#'   \item{M08 X}{X-coordinate of marker M08}
+#'   \item{M08 Y}{Y-coordinate of marker M08}
+#'   \item{M08 Z}{Z-coordinate of marker M08}
+#'   \item{M09 X}{X-coordinate of marker M09}
+#'   \item{M09 Y}{Y-coordinate of marker M09}
+#'   \item{M09 Z}{Z-coordinate of marker M09}
+#'   \item{M10 X}{X-coordinate of marker M10}
+#'   \item{M10 Y}{Y-coordinate of marker M10}
+#'   \item{M10 Z}{Z-coordinate of marker M10}
+#'   \item{M11 X}{X-coordinate of marker M11}
+#'   \item{M11 Y}{Y-coordinate of marker M11}
+#'   \item{M11 Z}{Z-coordinate of marker M11}
+#'   \item{M12 X}{X-coordinate of marker M12}
+#'   \item{M12 Y}{Y-coordinate of marker M12}
+#'   \item{M12 Z}{Z-coordinate of marker M12}
+#'   \item{M13 X}{X-coordinate of marker M13}
+#'   \item{M13 Y}{Y-coordinate of marker M13}
+#'   \item{M13 Z}{Z-coordinate of marker M13}
+#'   \item{M14 X}{X-coordinate of marker M14}
+#'   \item{M14 Y}{Y-coordinate of marker M14}
+#'   \item{M14 Z}{Z-coordinate of marker M14}
+#'   \item{M15 X}{X-coordinate of marker M15}
+#'   \item{M15 Y}{Y-coordinate of marker M15}
+#'   \item{M15 Z}{Z-coordinate of marker M15}
+#'   \item{M16 X}{X-coordinate of marker M16}
+#'   \item{M16 Y}{Y-coordinate of marker M16}
+#'   \item{M16 Z}{Z-coordinate of marker M16}
+#'   \item{M17 X}{X-coordinate of marker M17}
+#'   \item{M17 Y}{Y-coordinate of marker M17}
+#'   \item{M17 Z}{Z-coordinate of marker M17}
+#'   \item{M18 X}{X-coordinate of marker M18}
+#'   \item{M18 Y}{Y-coordinate of marker M18}
+#'   \item{M18 Z}{Z-coordinate of marker M18}
+#'   \item{M19 X}{X-coordinate of marker M19}
+#'   \item{M19 Y}{Y-coordinate of marker M19}
+#'   \item{M19 Z}{Z-coordinate of marker M19}
+#'   \item{M20 X}{X-coordinate of marker M20}
+#'   \item{M20 Y}{Y-coordinate of marker M20}
+#'   \item{M20 Z}{Z-coordinate of marker M20}
+#'   \item{M21 X}{X-coordinate of marker M21}
+#'   \item{M21 Y}{Y-coordinate of marker M21}
+#'   \item{M21 Z}{Z-coordinate of marker M21}
+#'   \item{M22 X}{X-coordinate of marker M22}
+#'   \item{M22 Y}{Y-coordinate of marker M22}
+#'   \item{M22 Z}{Z-coordinate of marker M22}
+#'   \item{M23 X}{X-coordinate of marker M23}
+#'   \item{M23 Y}{Y-coordinate of marker M23}
+#'   \item{M23 Z}{Z-coordinate of marker M23}
+#'   \item{M24 X}{X-coordinate of marker M24}
+#'   \item{M24 Y}{Y-coordinate of marker M24}
+#'   \item{M24 Z}{Z-coordinate of marker M24}
+#'   \item{M25 X}{X-coordinate of marker M25}
+#'   \item{M25 Y}{Y-coordinate of marker M25}
+#'   \item{M25 Z}{Z-coordinate of marker M25}
+#'   \item{M26 X}{X-coordinate of marker M26}
+#'   \item{M26 Y}{Y-coordinate of marker M26}
+#'   \item{M26 Z}{Z-coordinate of marker M26}
+#'   \item{M27 X}{X-coordinate of marker M27}
+#'   \item{M27 Y}{Y-coordinate of marker M27}
+#'   \item{M27 Z}{Z-coordinate of marker M27}
+#'   \item{M28 X}{X-coordinate of marker M28}
+#'   \item{M28 Y}{Y-coordinate of marker M28}
+#'   \item{M28 Z}{Z-coordinate of marker M28}
+#'   \item{M29 X}{X-coordinate of marker M29}
+#'   \item{M29 Y}{Y-coordinate of marker M29}
+#'   \item{M29 Z}{Z-coordinate of marker M29}
+#'   \item{M30 X}{X-coordinate of marker M30}
+#'   \item{M30 Y}{Y-coordinate of marker M30}
+#'   \item{M30 Z}{Z-coordinate of marker M30}
+#' }
+#' @details This dataset can be used to analyze chest expansion and calculate
+#' the volume of chest segments using convex hull methods. The markers are
+#' placed around the chest, and the data tracks the chest wall motion over time.
+#'
+#' @source Collected using motion capture technology (e.g., Vicon system) for chest expansion studies.
+#'
+#' @examples
+#' data(sample_data)
+#' head(sample_data)
+"sample_data"

@@ -1,0 +1,113 @@
+---
+title: "ChestVolume"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ChestVolume}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ChestVolume)
+```
+
+## Introduction
+
+ChestVolume is an R package designed to process and analyze 3D marker data collected from motion capture systems, particularly for studying chest expansion and respiratory motion. The package provides tools to process the data, adjust marker positions, calculate convex hull volumes for chest segments, and visualize changes in chest expansion over time using both 2D and 3D plots.
+
+## Installation
+To install ChestVolume from GitHub, use the following commands:
+
+library(devtools)
+
+devtools::install_github("PKwong86/ChestVolume")
+
+This will install the package along with its dependencies.
+
+## Data Structure and Input Format
+The input data should be in the form of a data frame where each marker has three corresponding columns (X, Y, and Z coordinates), and each row represents a different timeframe. The column names should follow the format 'MXX X', 'MXX Y', and 'MXX Z' where 'MXX' represents the marker name.
+
+## Example Input Data
+Each row in the data corresponds to a specific time point, and the columns represent the X, Y, and Z coordinates of markers placed on the chest.
+```{r warning=FALSE}
+library(ChestVolume)
+knitr::kable(head(sample_data[, 1:6]), "pipe")
+```
+## Core Functions
+The ChestVolume package provides several core functions to work with the marker data:
+
+process_marker_data(): This function processes and reshapes the input marker data into a long format with columns for Timeframe, Marker, X, Y, and Z. You can optionally convert the coordinates from millimeters to centimeters by setting the convert_to_cm argument to TRUE.
+
+adj_position(): Adjusts the marker positions by moving them a specified distance toward the center of the chest. This is useful for correcting the slight protrusion of motion capture markers.
+
+calculate_volumes(): Divides the chest into user-defined segments and calculates the convex hull volume for each segment over time.
+
+plot_chest_3d(): Provides a 3D visualization of the chest markers and the convex hulls of the defined chest segments.
+
+plot_2d_volume(): Generates a 2D line plot showing how the chest segment volumes change over time.
+
+## Example Workflow
+Here’s a step-by-step workflow using ChestVolume to process marker data, adjust the marker positions, calculate chest segment volumes, and visualize the results.
+
+# Step 1: Process Marker Data
+Load the raw marker data, process it, and optionally convert the units from millimeters to centimeters.
+```{r}
+data(sample_data)
+processed_data <- process_marker_data(sample_data, convert_to_cm = TRUE)
+head(processed_data)
+
+```
+# Step 2: Adjust Marker Positions
+Use the adj_position() function to adjust the marker positions by a set distance (e.g., 1 cm) toward the chest surface.
+```{r}
+# Adjust the marker positions by moving them 1 cm toward the chest center
+adjusted_data <- adj_position(processed_data, distance = 1)
+head(adjusted_data)
+```
+
+#Step 3: Define Chest Segments and Calculate Volumes
+Define the chest segments based on marker names and calculate the convex hull volumes for each segment over time.
+
+```{r}
+segments <- list(
+  upper_left = c("M01", "M02", "M04", "M05","M07", "M08","M10", "M11")
+)
+volumes<- calculate_volumes(adjusted_data, segments)
+head(volumes)
+```
+
+# Step 4: Visualize Chest Expansion in 3D
+Use the plot_chest_3d() function to create a 3D plot of the chest markers and their convex hull volumes.
+```{r eval=FALSE, warning=FALSE, include=FALSE}
+plot_chest_3d(adjusted_data, segments, selected_segment = 'upper_left')
+```
+
+#Step 5: Plot Volume Changes Over Time
+Generate a 2D line plot showing how the chest segment volumes change over time using plot_2d_volume().
+```{r}
+plot_2d_volume(volumes, 'Segment')
+```
+
+## Additional Features
+Custom Segment Definitions
+You can define custom chest segments by uploading an Excel file that specifies which markers belong to which segment. Use the read_segment_definitions() function to read the segment definitions from the file.
+```{r message=FALSE, warning=FALSE}
+segments <- read_segment_definitions(system.file("extdata", "segment_def.xlsx", package="ChestVolume"))
+head(segments)
+```
+
+
+## Shiny App
+For users who prefer a graphical user interface, ChestVolume includes a Shiny app. This app allows you to interact with the data visually, upload datasets, define segments, and calculate and visualize chest expansion.
+
+Access the Shiny app online: https://waihangkwong.shinyapps.io/Lung_volumn/
+
+## Conclusion
+The ChestVolume package provides a comprehensive set of tools for analyzing chest expansion using 3D motion capture data. By allowing users to process, adjust, and visualize chest volume data, the package supports advanced respiratory health assessments and research.

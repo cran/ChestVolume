@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>ChestVolume</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">ChestVolume</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ChestVolume)</span></code></pre></div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>ChestVolume is an R package designed to process and analyze 3D marker
+data collected from motion capture systems, particularly for studying
+chest expansion and respiratory motion. The package provides tools to
+process the data, adjust marker positions, calculate convex hull volumes
+for chest segments, and visualize changes in chest expansion over time
+using both 2D and 3D plots.</p>
+</div>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>To install ChestVolume from GitHub, use the following commands:</p>
+<p>library(devtools)</p>
+<p>devtools::install_github(“PKwong86/ChestVolume”)</p>
+<p>This will install the package along with its dependencies.</p>
+</div>
+<div id="data-structure-and-input-format" class="section level2">
+<h2>Data Structure and Input Format</h2>
+<p>The input data should be in the form of a data frame where each
+marker has three corresponding columns (X, Y, and Z coordinates), and
+each row represents a different timeframe. The column names should
+follow the format ‘MXX X’, ‘MXX Y’, and ‘MXX Z’ where ‘MXX’ represents
+the marker name.</p>
+</div>
+<div id="example-input-data" class="section level2">
+<h2>Example Input Data</h2>
+<p>Each row in the data corresponds to a specific time point, and the
+columns represent the X, Y, and Z coordinates of markers placed on the
+chest.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(ChestVolume)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(sample_data[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]), <span class="st">&quot;pipe&quot;</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">M19 X</th>
+<th align="right">M19 Y</th>
+<th align="right">M19 Z</th>
+<th align="right">M10 X</th>
+<th align="right">M10 Y</th>
+<th align="right">M10 Z</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-108.966</td>
+<td align="right">664.901</td>
+<td align="right">974.120</td>
+<td align="right">-158.588</td>
+<td align="right">854.272</td>
+<td align="right">881.284</td>
+</tr>
+<tr class="even">
+<td align="right">-108.909</td>
+<td align="right">664.922</td>
+<td align="right">974.164</td>
+<td align="right">-158.550</td>
+<td align="right">854.293</td>
+<td align="right">881.271</td>
+</tr>
+<tr class="odd">
+<td align="right">-108.852</td>
+<td align="right">664.944</td>
+<td align="right">974.205</td>
+<td align="right">-158.517</td>
+<td align="right">854.316</td>
+<td align="right">881.266</td>
+</tr>
+<tr class="even">
+<td align="right">-108.794</td>
+<td align="right">664.970</td>
+<td align="right">974.241</td>
+<td align="right">-158.489</td>
+<td align="right">854.342</td>
+<td align="right">881.271</td>
+</tr>
+<tr class="odd">
+<td align="right">-108.736</td>
+<td align="right">664.999</td>
+<td align="right">974.269</td>
+<td align="right">-158.467</td>
+<td align="right">854.368</td>
+<td align="right">881.285</td>
+</tr>
+<tr class="even">
+<td align="right">-108.681</td>
+<td align="right">665.027</td>
+<td align="right">974.286</td>
+<td align="right">-158.446</td>
+<td align="right">854.392</td>
+<td align="right">881.302</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="core-functions" class="section level2">
+<h2>Core Functions</h2>
+<p>The ChestVolume package provides several core functions to work with
+the marker data:</p>
+<p>process_marker_data(): This function processes and reshapes the input
+marker data into a long format with columns for Timeframe, Marker, X, Y,
+and Z. You can optionally convert the coordinates from millimeters to
+centimeters by setting the convert_to_cm argument to TRUE.</p>
+<p>adj_position(): Adjusts the marker positions by moving them a
+specified distance toward the center of the chest. This is useful for
+correcting the slight protrusion of motion capture markers.</p>
+<p>calculate_volumes(): Divides the chest into user-defined segments and
+calculates the convex hull volume for each segment over time.</p>
+<p>plot_chest_3d(): Provides a 3D visualization of the chest markers and
+the convex hulls of the defined chest segments.</p>
+<p>plot_2d_volume(): Generates a 2D line plot showing how the chest
+segment volumes change over time.</p>
+</div>
+<div id="example-workflow" class="section level2">
+<h2>Example Workflow</h2>
+<p>Here’s a step-by-step workflow using ChestVolume to process marker
+data, adjust the marker positions, calculate chest segment volumes, and
+visualize the results.</p>
+</div>
+<div id="step-1-process-marker-data" class="section level1">
+<h1>Step 1: Process Marker Data</h1>
+<p>Load the raw marker data, process it, and optionally convert the
+units from millimeters to centimeters.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">data</span>(sample_data)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>processed_data <span class="ot">&lt;-</span> <span class="fu">process_marker_data</span>(sample_data, <span class="at">convert_to_cm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">head</span>(processed_data)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;   Timeframe Marker     X     Y     Z</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; 1         1 M01     1.88  80.4  91.4</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; 2         1 M02     7.25  76.0  74.8</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; 3         1 M03     8.11  74.7  65.9</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; 4         1 M04    -1.83  85.6  87.9</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; 5         1 M05     3.90  81.3  72.9</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; 6         1 M06     4.31  79.3  64.9</span></span></code></pre></div>
+</div>
+<div id="step-2-adjust-marker-positions" class="section level1">
+<h1>Step 2: Adjust Marker Positions</h1>
+<p>Use the adj_position() function to adjust the marker positions by a
+set distance (e.g., 1 cm) toward the chest surface.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Adjust the marker positions by moving them 1 cm toward the chest center</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>adjusted_data <span class="ot">&lt;-</span> <span class="fu">adj_position</span>(processed_data, <span class="at">distance =</span> <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">head</span>(adjusted_data)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;   Timeframe Marker     X     Y     Z</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; 1         1 M01     1.58  79.9  90.6</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 2         1 M02     6.36  75.6  75.1</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; 3         1 M03     7.43  74.5  66.6</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 4         1 M04    -1.91  84.8  87.3</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; 5         1 M05     3.36  80.6  73.3</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 6         1 M06     3.87  78.9  65.6</span></span></code></pre></div>
+<p>#Step 3: Define Chest Segments and Calculate Volumes Define the chest
+segments based on marker names and calculate the convex hull volumes for
+each segment over time.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>segments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">upper_left =</span> <span class="fu">c</span>(<span class="st">&quot;M01&quot;</span>, <span class="st">&quot;M02&quot;</span>, <span class="st">&quot;M04&quot;</span>, <span class="st">&quot;M05&quot;</span>,<span class="st">&quot;M07&quot;</span>, <span class="st">&quot;M08&quot;</span>,<span class="st">&quot;M10&quot;</span>, <span class="st">&quot;M11&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>volumes<span class="ot">&lt;-</span> <span class="fu">calculate_volumes</span>(adjusted_data, segments)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">head</span>(volumes)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;   Timeframe Segment    Volume</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 1         1 upper_left  1759.</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 2         2 upper_left  1759.</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 3         3 upper_left  1759.</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 4         4 upper_left  1759.</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 5         5 upper_left  1759.</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 6         6 upper_left  1759.</span></span></code></pre></div>
+</div>
+<div id="step-4-visualize-chest-expansion-in-3d" class="section level1">
+<h1>Step 4: Visualize Chest Expansion in 3D</h1>
+<p>Use the plot_chest_3d() function to create a 3D plot of the chest
+markers and their convex hull volumes.</p>
+<p>#Step 5: Plot Volume Changes Over Time Generate a 2D line plot
+showing how the chest segment volumes change over time using
+plot_2d_volume().</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">plot_2d_volume</span>(volumes, <span class="st">&#39;Segment&#39;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div id="additional-features" class="section level2">
+<h2>Additional Features</h2>
+<p>Custom Segment Definitions You can define custom chest segments by
+uploading an Excel file that specifies which markers belong to which
+segment. Use the read_segment_definitions() function to read the segment
+definitions from the file.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>segments <span class="ot">&lt;-</span> <span class="fu">read_segment_definitions</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;segment_def.xlsx&quot;</span>, <span class="at">package=</span><span class="st">&quot;ChestVolume&quot;</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">head</span>(segments)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; $`Segment Name`</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;Marker 1&quot;  &quot;Marker 2&quot;  &quot;Marker 3&quot;  &quot;Marker 4&quot;  &quot;Marker 5&quot;  &quot;Marker 6&quot; </span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;Marker 7&quot;  &quot;Marker 8&quot;  &quot;Marker 9&quot;  &quot;Marker 10&quot; &quot;Marker 11&quot; &quot;Marker 12&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; $UL</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;M01&quot; &quot;M02&quot; &quot;M04&quot; &quot;M05&quot; &quot;M07&quot; &quot;M08&quot; &quot;M10&quot; &quot;M11&quot; &quot;M13&quot; &quot;M14&quot; &quot;M16&quot; &quot;M17&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; $UR</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;M16&quot; &quot;M17&quot; &quot;M19&quot; &quot;M20&quot; &quot;M22&quot; &quot;M23&quot; &quot;M25&quot; &quot;M26&quot; &quot;M28&quot; &quot;M29&quot; &quot;M01&quot; &quot;M02&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; $LL</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;M02&quot; &quot;M03&quot; &quot;M05&quot; &quot;M06&quot; &quot;M08&quot; &quot;M09&quot; &quot;M11&quot; &quot;M12&quot; &quot;M14&quot; &quot;M15&quot; &quot;M17&quot; &quot;M18&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; $LR</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;M17&quot; &quot;M18&quot; &quot;M20&quot; &quot;M21&quot; &quot;M23&quot; &quot;M24&quot; &quot;M26&quot; &quot;M27&quot; &quot;M29&quot; &quot;M30&quot; &quot;M02&quot; &quot;M03&quot;</span></span></code></pre></div>
+</div>
+<div id="shiny-app" class="section level2">
+<h2>Shiny App</h2>
+<p>For users who prefer a graphical user interface, ChestVolume includes
+a Shiny app. This app allows you to interact with the data visually,
+upload datasets, define segments, and calculate and visualize chest
+expansion.</p>
+<p>Access the Shiny app online: <a href="https://waihangkwong.shinyapps.io/Lung_volumn/" class="uri">https://waihangkwong.shinyapps.io/Lung_volumn/</a></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The ChestVolume package provides a comprehensive set of tools for
+analyzing chest expansion using 3D motion capture data. By allowing
+users to process, adjust, and visualize chest volume data, the package
+supports advanced respiratory health assessments and research.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
