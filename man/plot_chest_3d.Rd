@@ -44,7 +44,7 @@ and overlaying the convex hull mesh of the selected segment. The plot is interac
 \examples{
 # Example input data (replace with your actual data)
 data(sample_data)
-df<-process_marker_data(head(sample_data))
+df<-reformat_marker_data(head(sample_data))
 df_a <- adj_position(df)
 # Define segments
 segments <- list(

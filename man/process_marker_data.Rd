@@ -2,30 +2,24 @@
 % Please edit documentation in R/process_marker_data.R
 \name{process_marker_data}
 \alias{process_marker_data}
-\title{Process and Sort Marker Data for All Time Frames}
+\title{Deprecated: Process Marker Data}
 \usage{
-process_marker_data(data, convert_to_cm = TRUE)
+process_marker_data(data, convert_to_cm = FALSE)
 }
 \arguments{
-\item{data}{A data frame containing marker coordinate data for all time frames.
-Columns should be named in the format 'MXX X', 'MXX Y', 'MXX Z' where 'MXX' is the marker name.}
+\item{data}{A data frame containing marker coordinate data for all time frames.}
 
-\item{convert_to_cm}{Logical, if TRUE, divides X, Y, Z coordinates by 10 to convert to centimeters (from millimeters).}
+\item{convert_to_cm}{Logical, if TRUE, converts units from mm to cm.}
 }
 \value{
-A data frame with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z', sorted by Timeframe and Marker.
+A data frame of the same format as reformat_marker_data().
 }
 \description{
-Processes the input dataset by sorting marker columns based on marker names
-and reformats it into a long format with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z'.
-Adds a Timeframe column corresponding to each row (time frame) in the original data.
-}
-\details{
-The function reshapes the wide-format data into a long format suitable for analysis,
-adding a Timeframe column that corresponds to each time frame. Optionally converts units to centimeters.
+This function is deprecated. Please use \code{\link{reformat_marker_data}} instead.
 }
 \examples{
-data(sample_data)
+data("sample_data")
+# Using the old function will show a warning and call reformat_marker_data()
 processed_data <- process_marker_data(head(sample_data), convert_to_cm = TRUE)
 head(processed_data)
 

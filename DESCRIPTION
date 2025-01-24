@@ -1,6 +1,6 @@
 Package: ChestVolume
 Title: Estimate the Chest Volume with Markers Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person("Wai-Hang", "Kwong", email = "wai-hang.kwong@polyu.edu.hk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1834-5715"))
@@ -16,7 +16,7 @@ Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2024-09-23 15:27:35 UTC; user
+Packaged: 2025-01-24 04:36:17 UTC; whkwong
 Author: Wai-Hang Kwong [aut, cre] (<https://orcid.org/0000-0002-1834-5715>)
 Repository: CRAN
-Date/Publication: 2024-09-24 19:00:11 UTC
+Date/Publication: 2025-01-24 04:50:01 UTC

@@ -4,28 +4,40 @@
 \alias{adj_position}
 \title{Adjust Marker Positions Towards Center}
 \usage{
-adj_position(data, distance = 1)
+adj_position(data, distance = 1, centroid = "Average")
 }
 \arguments{
 \item{data}{A data frame where each row represents a marker at a specific timeframe, with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z'.}
 
-\item{distance}{Numeric value indicating the distance to adjust towards the center (default is 1 cm).}
+\item{distance}{Numeric value indicating the distance to adjust markers towards the center (default is 1 cm).}
+
+\item{centroid}{A character string specifying the method to compute the centroid. Either \code{"average"} (default) or \code{"convex hull"}.}
 }
 \value{
 A data frame of the same dimensions as \code{data}, containing the adjusted marker coordinates.
 }
 \description{
-Adjusts the positions of markers by moving them towards the average center position within each timeframe
-by a specified distance. This accounts for marker protrusion from the skin surface.
+Adjusts the positions of markers by moving them towards a specified center position within each timeframe
+by a specified distance. The center (centroid) can be determined by one of two methods:
 }
 \details{
-The function calculates the average center position of all markers within each timeframe and moves each marker towards the center
-by the specified distance along the line connecting the marker to the center.
+\enumerate{
+\item \strong{"average"} (default): The centroid is computed as the mean of all marker coordinates in each timeframe.
+\item \strong{"convex hull"}: The centroid is computed using a convex hull-based approach, representing a geometrically derived center.
+}
+
+When \code{centroid = "average"}, the centroid is simply the mean of \code{X}, \code{Y}, and \code{Z} for all markers within each timeframe.
+When \code{centroid = "convex hull"}, the centroid is computed using a convex hull-based method to identify a more geometrically relevant center.
 }
 \examples{
 data("sample_data")
-processed_data <- process_marker_data(head(sample_data))
-adjusted_data <- adj_position(processed_data, distance = 1)
-head(adjusted_data)
+reformat_data <- reformat_marker_data(head(sample_data))
+
+# Using the average centroid (default)
+adjusted_data_avg <- adj_position(reformat_data, distance = 1, centroid = "average")
+head(adjusted_data_avg)
+
+# Using the convex hull centroid
+adjusted_data_ch <- adj_position(reformat_data, distance = 1, centroid = "convex hull")
 
 }

@@ -16,8 +16,8 @@
 #'
 #' # Assume 'adjusted_data' is the data frame with adjusted marker positions in cm
 #' data('sample_data')
-#' processed_data <- process_marker_data(head(sample_data))
-#' adjusted_data <- adj_position(processed_data)
+#' reformat_data <- reformat_marker_data(head(sample_data))
+#' adjusted_data <- adj_position(reformat_data)
 #' volumes_df <- calculate_volumes(adjusted_data, segments)
 #' head(volumes_df)
 #'
